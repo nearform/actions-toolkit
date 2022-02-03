@@ -1,0 +1,29 @@
+{
+  "name": "actions-toolkit",
+  "version": "1.0.0",
+  "description": "Toolkit for developing NearForm GitHub Actions.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nearform/actions-toolkit.git"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Sameer Srivastava",
+    "email": "sameer.srivastava@nearform.com"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nearform/actions-toolkit/issues"
+  },
+  "homepage": "https://github.com/nearform/actions-toolkit#readme",
+  "devDependencies": {
+    "tap": "^15.1.6"
+  }
+}
