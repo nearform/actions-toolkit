@@ -1,10 +1,10 @@
 'use strict'
 
 /**
- * Displays warning message if the action reference is pinned to master/main
+ * Returns warning message if the action reference is pinned to master/main
  *
- * @param     repoName     Full name of the repo (owner/repo-name)
- * @return   { String }    Warning to be emitted
+ * @param     repoName          Full name of the repo (owner/repo-name)
+ * @return   { String | null }  Warning to be emitted
  */
 function getActionRefWarning(repoName) {
   if (!repoName) return null
@@ -12,7 +12,7 @@ function getActionRefWarning(repoName) {
   const actionRef = process.env.GITHUB_ACTION_REF
 
   if (actionRef === 'main' || actionRef === 'master') {
-    const warning =
+    return (
       `${repoName} is pinned at HEAD. We strongly ` +
       `advise against pinning to "@master" as it may be unstable. Please ` +
       `update your GitHub Action YAML from:\n\n` +
@@ -21,7 +21,7 @@ function getActionRefWarning(repoName) {
       `    uses: '${repoName}@<release/tag version>'\n\n` +
       `Alternatively, you can pin to any git tag or git SHA in the ` +
       `repository.`
-    return warning
+    )
   }
   return null
 }
