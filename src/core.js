@@ -7,7 +7,10 @@
  * @return   { String }    Warning to be emitted
  */
 function getActionRefWarning(repoName) {
+  if (!repoName) return null
+
   const actionRef = process.env.GITHUB_ACTION_REF
+
   if (actionRef === 'main' || actionRef === 'master') {
     const warning =
       `${repoName} is pinned at HEAD. We strongly ` +

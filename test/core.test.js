@@ -73,3 +73,11 @@ test('should return null if actionRef is not main or master', async ({
 
   equal(warning, null)
 })
+
+test('should return null if invalid repoName', async ({ equal, plan }) => {
+  plan(1)
+
+  const warning = getActionRefWarning('')
+
+  equal(warning, null)
+})
