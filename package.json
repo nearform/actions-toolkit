@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "tap"
+    "test": "tap",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,11 @@
   },
   "homepage": "https://github.com/nearform/actions-toolkit#readme",
   "devDependencies": {
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
+    "prettier-config-standard": "^4.0.0",
     "tap": "^15.1.6"
   }
 }
