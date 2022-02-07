@@ -1,7 +1,7 @@
 'use strict'
 
 const { test } = require('tap')
-const { getActionRefWarning } = require('../src/core')
+const { getActionRefWarning } = require('../src')
 
 test('should return warning if actionRef is master', async ({
   match,
