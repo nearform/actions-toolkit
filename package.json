@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run lint && tap",
+    "test": "tap",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "prepare": "husky install"
