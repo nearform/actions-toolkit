@@ -15,13 +15,7 @@ const setup = () => {
   return { toolkit, warningStub }
 }
 
-test('should return warning if actionRef is master', async ({
-  match,
-  plan,
-  teardown
-}) => {
-  plan(1)
-
+test('should return warning if actionRef is master', async ({ teardown }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
   })
@@ -29,18 +23,15 @@ test('should return warning if actionRef is master', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'master'
-  toolkit.displayActionRefWarning('nearform/test-repo')
+  toolkit.logActionRefWarning('nearform/test-repo')
 
-  match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
+  sinon.assert.calledOnceWithMatch(
+    warningStub,
+    /nearform\/test-repo is pinned at HEAD/
+  )
 })
 
-test('should return warning if actionRef is main', async ({
-  match,
-  plan,
-  teardown
-}) => {
-  plan(1)
-
+test('should return warning if actionRef is main', async ({ teardown }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
   })
@@ -48,18 +39,17 @@ test('should return warning if actionRef is main', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
-  toolkit.displayActionRefWarning('nearform/test-repo')
+  toolkit.logActionRefWarning('nearform/test-repo')
 
-  match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
+  sinon.assert.calledOnceWithMatch(
+    warningStub,
+    /nearform\/test-repo is pinned at HEAD/
+  )
 })
 
 test('should not print warning if actionRef is not main or master', async ({
-  equal,
-  plan,
   teardown
 }) => {
-  plan(1)
-
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
   })
@@ -67,21 +57,16 @@ test('should not print warning if actionRef is not main or master', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'feat-test'
-  toolkit.displayActionRefWarning('nearform/test-repo')
+  toolkit.logActionRefWarning('nearform/test-repo')
 
-  equal(warningStub.called, false)
+  sinon.assert.notCalled(warningStub)
 })
 
-test('should print generic warning if invalid repoName', async ({
-  plan,
-  match
-}) => {
-  plan(1)
-
+test('should print generic warning if invalid repoName', async () => {
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
-  toolkit.displayActionRefWarning()
+  toolkit.logActionRefWarning()
 
-  match(warningStub.args[0], /Repository is pinned at HEAD/)
+  sinon.assert.calledOnceWithMatch(warningStub, /Repository is pinned at HEAD/)
 })
