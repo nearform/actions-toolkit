@@ -1,7 +1,19 @@
 'use strict'
 
 const { test } = require('tap')
-const { getActionRefWarning } = require('../src')
+const proxyquire = require('proxyquire')
+const sinon = require('sinon')
+
+const setup = () => {
+  const warningStub = sinon.stub()
+  const toolkit = proxyquire('../src/index', {
+    '@actions/core': {
+      warning: warningStub
+    }
+  })
+
+  return { toolkit, warningStub }
+}
 
 test('should return warning if actionRef is master', async ({
   match,
@@ -14,10 +26,12 @@ test('should return warning if actionRef is master', async ({
     process.env.GITHUB_ACTION_REF = undefined
   })
 
-  process.env.GITHUB_ACTION_REF = 'master'
-  const warning = getActionRefWarning('nearform/test-repo')
+  const { toolkit, warningStub } = setup()
 
-  match(warning, /nearform\/test-repo is pinned at HEAD/)
+  process.env.GITHUB_ACTION_REF = 'master'
+  toolkit.getActionRefWarning('nearform/test-repo')
+
+  match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
 })
 
 test('should return warning if actionRef is main', async ({
@@ -31,10 +45,12 @@ test('should return warning if actionRef is main', async ({
     process.env.GITHUB_ACTION_REF = undefined
   })
 
-  process.env.GITHUB_ACTION_REF = 'main'
-  const warning = getActionRefWarning('nearform/test-repo')
+  const { toolkit, warningStub } = setup()
 
-  match(warning, /nearform\/test-repo is pinned at HEAD/)
+  process.env.GITHUB_ACTION_REF = 'main'
+  toolkit.getActionRefWarning('nearform/test-repo')
+
+  match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
 })
 
 test('should return null if actionRef is not main or master', async ({
@@ -48,16 +64,24 @@ test('should return null if actionRef is not main or master', async ({
     process.env.GITHUB_ACTION_REF = undefined
   })
 
-  process.env.GITHUB_ACTION_REF = 'feat-test'
-  const warning = getActionRefWarning('nearform/test-repo')
+  const { toolkit, warningStub } = setup()
 
-  equal(warning, null)
+  process.env.GITHUB_ACTION_REF = 'feat-test'
+  toolkit.getActionRefWarning('nearform/test-repo')
+
+  equal(warningStub.called, false)
 })
 
-test('should return null if invalid repoName', async ({ equal, plan }) => {
+test('should print generic warning if invalid repoName', async ({
+  plan,
+  match
+}) => {
   plan(1)
 
-  const warning = getActionRefWarning('')
+  const { toolkit, warningStub } = setup()
 
-  equal(warning, null)
+  process.env.GITHUB_ACTION_REF = 'main'
+  toolkit.getActionRefWarning()
+
+  match(warningStub.args[0], /Repository is pinned at HEAD/)
 })
