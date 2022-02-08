@@ -1,31 +1,29 @@
 'use strict'
 
+const core = require('@actions/core')
+
 /**
- * Returns warning message if the action reference is pinned to master/main
+ * Displays warning message if the action reference is pinned to master/main
  *
  * @param     repoName          Full name of the repo (owner/repo-name)
- * @return   { String | null }  Warning to be emitted
  */
-function getActionRefWarning(repoName) {
-  if (!repoName) return null
-
+function logActionRefWarning(repoName = 'Repository') {
   const actionRef = process.env.GITHUB_ACTION_REF
 
   if (actionRef === 'main' || actionRef === 'master') {
-    return (
+    core.warning(
       `${repoName} is pinned at HEAD. We strongly ` +
-      `advise against pinning to "@master" as it may be unstable. Please ` +
-      `update your GitHub Action YAML from:\n\n` +
-      `    uses: '${repoName}@master'\n\n` +
-      `to:\n\n` +
-      `    uses: '${repoName}@<release/tag version>'\n\n` +
-      `Alternatively, you can pin to any git tag or git SHA in the ` +
-      `repository.`
+        `advise against pinning to "@master" as it may be unstable. Please ` +
+        `update your GitHub Action YAML from:\n\n` +
+        `    uses: '${repoName}@${actionRef}'\n\n` +
+        `to:\n\n` +
+        `    uses: '${repoName}@<release/tag version>'\n\n` +
+        `Alternatively, you can pin to any git tag or git SHA in the ` +
+        `repository.`
     )
   }
-  return null
 }
 
 module.exports = {
-  getActionRefWarning
+  logActionRefWarning
 }
