@@ -29,7 +29,7 @@ test('should return warning if actionRef is master', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'master'
-  toolkit.getActionRefWarning('nearform/test-repo')
+  toolkit.displayActionRefWarning('nearform/test-repo')
 
   match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
 })
@@ -48,7 +48,7 @@ test('should return warning if actionRef is main', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
-  toolkit.getActionRefWarning('nearform/test-repo')
+  toolkit.displayActionRefWarning('nearform/test-repo')
 
   match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
 })
@@ -67,7 +67,7 @@ test('should return null if actionRef is not main or master', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'feat-test'
-  toolkit.getActionRefWarning('nearform/test-repo')
+  toolkit.displayActionRefWarning('nearform/test-repo')
 
   equal(warningStub.called, false)
 })
@@ -81,7 +81,7 @@ test('should print generic warning if invalid repoName', async ({
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
-  toolkit.getActionRefWarning()
+  toolkit.displayActionRefWarning()
 
   match(warningStub.args[0], /Repository is pinned at HEAD/)
 })

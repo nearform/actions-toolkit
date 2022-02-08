@@ -7,7 +7,7 @@ const core = require('@actions/core')
  *
  * @param     repoName          Full name of the repo (owner/repo-name)
  */
-function getActionRefWarning(repoName = 'Repository') {
+function displayActionRefWarning(repoName = 'Repository') {
   const actionRef = process.env.GITHUB_ACTION_REF
 
   if (actionRef === 'main' || actionRef === 'master') {
@@ -25,5 +25,5 @@ function getActionRefWarning(repoName = 'Repository') {
 }
 
 module.exports = {
-  getActionRefWarning
+  displayActionRefWarning
 }
