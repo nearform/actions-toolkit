@@ -53,7 +53,7 @@ test('should return warning if actionRef is main', async ({
   match(warningStub.args[0], /nearform\/test-repo is pinned at HEAD/)
 })
 
-test('should return null if actionRef is not main or master', async ({
+test('should not print warning if actionRef is not main or master', async ({
   equal,
   plan,
   teardown
