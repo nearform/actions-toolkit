@@ -5,18 +5,14 @@ const github = require('@actions/github')
 
 /**
  * Displays warning message if the action reference is pinned to master/main
- *
- * @param     repoName          Full name of the repo (owner/repo-name)
  */
-function logActionRefWarning(repoName = 'Repository') {
+function logActionRefWarning() {
   const actionRef = process.env.GITHUB_ACTION_REF
-
-  console.log('Repo name event:', github.event.repository.name)
-  console.log('Repo name from pr', github.event.pull_request.base.repo.name)
+  const repoName = github.context?.payload?.repository?.full_name
 
   if (actionRef === 'main' || actionRef === 'master') {
     core.warning(
-      `${repoName} is pinned at HEAD. We strongly ` +
+      `${repoName || 'Repository'} is pinned at HEAD. We strongly ` +
         `advise against pinning to "@master" as it may be unstable. Please ` +
         `update your GitHub Action YAML from:\n\n` +
         `    uses: '${repoName}@${actionRef}'\n\n` +
