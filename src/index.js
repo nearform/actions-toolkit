@@ -8,11 +8,11 @@ const github = require('@actions/github')
  */
 function logActionRefWarning() {
   const actionRef = process.env.GITHUB_ACTION_REF
-  const repoName = github.context?.payload?.repository?.full_name
+  const repoName = github.context.payload.repository.full_name
 
   if (actionRef === 'main' || actionRef === 'master') {
     core.warning(
-      `${repoName || 'Repository'} is pinned at HEAD. We strongly ` +
+      `${repoName} is pinned at HEAD. We strongly ` +
         `advise against pinning to "@master" as it may be unstable. Please ` +
         `update your GitHub Action YAML from:\n\n` +
         `    uses: '${repoName}@${actionRef}'\n\n` +

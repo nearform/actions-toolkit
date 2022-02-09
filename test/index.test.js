@@ -71,12 +71,3 @@ test('should not print warning if actionRef is not main or master', async ({
 
   sinon.assert.notCalled(warningStub)
 })
-
-test('should print generic warning if invalid repoName', async () => {
-  const { toolkit, warningStub } = setup(null)
-
-  process.env.GITHUB_ACTION_REF = 'main'
-  toolkit.logActionRefWarning()
-
-  sinon.assert.calledOnceWithMatch(warningStub, /Repository is pinned at HEAD/)
-})
