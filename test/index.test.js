@@ -4,11 +4,21 @@ const { test } = require('tap')
 const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
-const setup = () => {
+const setup = repoName => {
   const warningStub = sinon.stub()
+
   const toolkit = proxyquire('../src/index', {
     '@actions/core': {
       warning: warningStub
+    },
+    '@actions/github': {
+      context: {
+        payload: {
+          repository: {
+            full_name: repoName
+          }
+        }
+      }
     }
   })
 
@@ -20,10 +30,10 @@ test('should return warning if actionRef is master', async ({ teardown }) => {
     process.env.GITHUB_ACTION_REF = undefined
   })
 
-  const { toolkit, warningStub } = setup()
+  const { toolkit, warningStub } = setup('nearform/test-repo')
 
   process.env.GITHUB_ACTION_REF = 'master'
-  toolkit.logActionRefWarning('nearform/test-repo')
+  toolkit.logActionRefWarning()
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
@@ -36,10 +46,10 @@ test('should return warning if actionRef is main', async ({ teardown }) => {
     process.env.GITHUB_ACTION_REF = undefined
   })
 
-  const { toolkit, warningStub } = setup()
+  const { toolkit, warningStub } = setup('nearform/test-repo')
 
   process.env.GITHUB_ACTION_REF = 'main'
-  toolkit.logActionRefWarning('nearform/test-repo')
+  toolkit.logActionRefWarning()
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
@@ -54,19 +64,10 @@ test('should not print warning if actionRef is not main or master', async ({
     process.env.GITHUB_ACTION_REF = undefined
   })
 
-  const { toolkit, warningStub } = setup()
+  const { toolkit, warningStub } = setup('nearform/test-repo')
 
   process.env.GITHUB_ACTION_REF = 'feat-test'
-  toolkit.logActionRefWarning('nearform/test-repo')
-
-  sinon.assert.notCalled(warningStub)
-})
-
-test('should print generic warning if invalid repoName', async () => {
-  const { toolkit, warningStub } = setup()
-
-  process.env.GITHUB_ACTION_REF = 'main'
   toolkit.logActionRefWarning()
 
-  sinon.assert.calledOnceWithMatch(warningStub, /Repository is pinned at HEAD/)
+  sinon.assert.notCalled(warningStub)
 })

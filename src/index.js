@@ -1,14 +1,14 @@
 'use strict'
 
 const core = require('@actions/core')
+const github = require('@actions/github')
 
 /**
  * Displays warning message if the action reference is pinned to master/main
- *
- * @param     repoName          Full name of the repo (owner/repo-name)
  */
-function logActionRefWarning(repoName = 'Repository') {
+function logActionRefWarning() {
   const actionRef = process.env.GITHUB_ACTION_REF
+  const repoName = github.context.payload.repository.full_name
 
   if (actionRef === 'main' || actionRef === 'master') {
     core.warning(
