@@ -43,7 +43,6 @@
     "*.{js}": "eslint --cache --fix"
   },
   "dependencies": {
-    "@actions/core": "^1.6.0",
-    "@actions/github": "^5.0.1"
+    "@actions/core": "^1.6.0"
   }
 }
