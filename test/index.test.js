@@ -19,13 +19,13 @@ const setup = () => {
 test('should return warning if actionRef is master', async ({ teardown }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
-    process.env.GITHUB_REPOSITORY = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
   })
 
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'master'
-  process.env.GITHUB_REPOSITORY = 'nearform/test-repo'
+  process.env.GITHUB_ACTION_REPOSITORY = 'nearform/test-repo'
   toolkit.logActionRefWarning()
 
   sinon.assert.calledOnceWithMatch(
@@ -37,13 +37,13 @@ test('should return warning if actionRef is master', async ({ teardown }) => {
 test('should return warning if actionRef is main', async ({ teardown }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
-    process.env.GITHUB_REPOSITORY = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
   })
 
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
-  process.env.GITHUB_REPOSITORY = 'nearform/test-repo'
+  process.env.GITHUB_ACTION_REPOSITORY = 'nearform/test-repo'
   toolkit.logActionRefWarning()
 
   sinon.assert.calledOnceWithMatch(
@@ -57,14 +57,51 @@ test('should not print warning if actionRef is not main or master', async ({
 }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
-    process.env.GITHUB_REPOSITORY = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
   })
 
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'feat-test'
-  process.env.GITHUB_REPOSITORY = 'nearform/test-repo'
+  process.env.GITHUB_ACTION_REPOSITORY = 'nearform/test-repo'
   toolkit.logActionRefWarning()
+
+  sinon.assert.notCalled(warningStub)
+})
+
+test("should print a warning if repoName is not under the 'nearform-actions' organisation", async ({
+  teardown
+}) => {
+  teardown(() => {
+    process.env.GITHUB_ACTION_REF = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
+  })
+
+  const { toolkit, warningStub } = setup()
+
+  process.env.GITHUB_ACTION_REF = 'main'
+  process.env.GITHUB_ACTION_REPOSITORY = 'nearform/test-repo'
+  toolkit.logRepoWarning()
+
+  sinon.assert.calledOnceWithMatch(
+    warningStub,
+    /nearform\/test-repo is not under the nearform-actions organisation/
+  )
+})
+
+test("should not print a warning if repoName is under the 'nearform-actions' organisation", async ({
+  teardown
+}) => {
+  teardown(() => {
+    process.env.GITHUB_ACTION_REF = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
+  })
+
+  const { toolkit, warningStub } = setup()
+
+  process.env.GITHUB_ACTION_REF = 'main'
+  process.env.GITHUB_ACTION_REPOSITORY = 'nearform-actions/test-repo'
+  toolkit.logRepoWarning()
 
   sinon.assert.notCalled(warningStub)
 })
