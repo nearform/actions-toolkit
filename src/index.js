@@ -28,11 +28,12 @@ function logActionRefWarning() {
  */
 function logRepoWarning() {
   const repoName = process.env.GITHUB_ACTION_REPOSITORY
+  const repoOrg = repoName.split('/')[0]
 
-  if (repoName.split('/')[0] != 'nearform-actions') {
+  if (repoOrg != 'nearform-actions') {
     core.warning(
-      `${repoName} is not under the nearform-actions organisation` +
-        `Please update the repository to be 'nearform-actions'`
+      `'${repoOrg}' is no longer a valid organisation for this action.` +
+        `Please update it to be under the 'nearform-actions' organisation.`
     )
   }
 }
