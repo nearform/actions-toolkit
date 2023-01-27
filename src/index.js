@@ -7,7 +7,7 @@ const core = require('@actions/core')
  */
 function logActionRefWarning() {
   const actionRef = process.env.GITHUB_ACTION_REF
-  const repoName = process.env.GITHUB_REPOSITORY
+  const repoName = process.env.GITHUB_ACTION_REPOSITORY
 
   if (actionRef === 'main' || actionRef === 'master') {
     core.warning(
@@ -23,6 +23,22 @@ function logActionRefWarning() {
   }
 }
 
+/**
+ * Displays warning message if the repository is under the nearform organisation
+ */
+function logRepoWarning() {
+  const repoName = process.env.GITHUB_ACTION_REPOSITORY
+  const repoOrg = repoName.split('/')[0]
+
+  if (repoOrg != 'nearform-actions') {
+    core.warning(
+      `'${repoOrg}' is no longer a valid organisation for this action.` +
+        `Please update it to be under the 'nearform-actions' organisation.`
+    )
+  }
+}
+
 module.exports = {
-  logActionRefWarning
+  logActionRefWarning,
+  logRepoWarning
 }
