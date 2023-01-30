@@ -85,7 +85,7 @@ test("should print a warning if repoName is not under the 'nearform-actions' org
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
-    /'nearform' is no longer a valid organisation for this action./
+    /The 'test-repo' action, no longer exists under the 'nearform' organisation./
   )
 })
 
