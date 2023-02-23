@@ -69,20 +69,18 @@ test('should not print warning if actionRef is not main or master', async ({
   sinon.assert.notCalled(warningStub)
 })
 
-test("should print a warning if the reusable workflow is not under the 'nearform-actions' organisation", async ({
+test("should print a warning if repoName is not under the 'nearform-actions' organisation", async ({
   teardown
 }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
-    process.env.GITHUB_ACTION = undefined
   })
 
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'nearform/test-repo'
-  process.env.GITHUB_ACTION = '__nearform_test-repo'
   toolkit.logRepoWarning()
 
   sinon.assert.calledOnceWithMatch(
@@ -91,61 +89,18 @@ test("should print a warning if the reusable workflow is not under the 'nearform
   )
 })
 
-test("should not print a warning if the reusable workflow is under the 'nearform-actions' organisation", async ({
+test("should not print a warning if repoName is under the 'nearform-actions' organisation", async ({
   teardown
 }) => {
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
-    process.env.GITHUB_ACTION = undefined
   })
 
   const { toolkit, warningStub } = setup()
 
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'nearform-actions/test-repo'
-  process.env.GITHUB_ACTION = '__nearform_actions_test-repo'
-  toolkit.logRepoWarning()
-
-  sinon.assert.notCalled(warningStub)
-})
-
-test("should print a warning if the composite action is not under the 'nearform-actions' organisation", async ({
-  teardown
-}) => {
-  teardown(() => {
-    process.env.GITHUB_ACTION_REF = undefined
-    process.env.GITHUB_ACTION_REPOSITORY = undefined
-    process.env.GITHUB_ACTION = undefined
-  })
-
-  const { toolkit, warningStub } = setup()
-
-  process.env.GITHUB_ACTION_REF = 'main'
-  process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
-  process.env.GITHUB_ACTION = '__nearform_composite-action'
-  toolkit.logRepoWarning()
-
-  sinon.assert.calledOnceWithMatch(
-    warningStub,
-    /The 'composite-action' action, no longer exists under the 'nearform' organisation./
-  )
-})
-
-test("should not print a warning if the composite action is under the 'nearform-actions' organisation", async ({
-  teardown
-}) => {
-  teardown(() => {
-    process.env.GITHUB_ACTION_REF = undefined
-    process.env.GITHUB_ACTION_REPOSITORY = undefined
-    process.env.GITHUB_ACTION = undefined
-  })
-
-  const { toolkit, warningStub } = setup()
-
-  process.env.GITHUB_ACTION_REF = 'main'
-  process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
-  process.env.GITHUB_ACTION = '__nearform_actions_composite-action'
   toolkit.logRepoWarning()
 
   sinon.assert.notCalled(warningStub)

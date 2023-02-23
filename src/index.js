@@ -1,8 +1,6 @@
 'use strict'
 
 const core = require('@actions/core')
-const newOrg = 'nearform-actions'
-const oldOrg = 'nearform'
 
 /**
  * Displays warning message if the action reference is pinned to master/main
@@ -30,31 +28,19 @@ function logActionRefWarning() {
  */
 function logRepoWarning() {
   const actionRepo = process.env.GITHUB_ACTION_REPOSITORY
-  const action = process.env.GITHUB_ACTION
-
   const [repoOrg, repoName] = actionRepo.split('/')
-  let parentActionOrg, parentActionRepo
-  ;[, parentActionOrg] = action.match(/__(.*)_/)
-  parentActionOrg = parentActionOrg.replace('_', '-')
-  ;[parentActionRepo] = action.match(/([^_]+$)/)
+  const newOrg = 'nearform-actions'
 
-  if (repoOrg === oldOrg || parentActionOrg === oldOrg) {
-    return warning(repoOrg === oldOrg ? repoName : parentActionRepo)
+  if (repoOrg != newOrg) {
+    core.warning(
+      `The '${repoName}' action, no longer exists under the '${repoOrg}' organisation.\n` +
+        `Please update it to '${newOrg}', you can do this\n` +
+        `by updating your Github Workflow file from:\n\n` +
+        `    uses: '${repoOrg}/${repoName}'\n\n` +
+        `to:\n\n` +
+        `    uses: '${newOrg}/${repoName}'\n\n`
+    )
   }
-}
-
-/**
- * Simple function to avoid the repetition of the message
- */
-function warning(repoName) {
-  return core.warning(
-    `The '${repoName}' action, no longer exists under the '${oldOrg}' organisation.\n` +
-      `Please update it to '${newOrg}', you can do this\n` +
-      `by updating your Github Workflow file from:\n\n` +
-      `    uses: '${oldOrg}/${repoName}'\n\n` +
-      `to:\n\n` +
-      `    uses: '${newOrg}/${repoName}'\n\n`
-  )
 }
 
 module.exports = {
