@@ -30,16 +30,16 @@ function logActionRefWarning() {
  */
 function logRepoWarning() {
   const actionRepo = process.env.GITHUB_ACTION_REPOSITORY
-  const action = process.env.GITHUB_ACTION
-
   const [repoOrg, repoName] = actionRepo.split('/')
-  let parentActionOrg, parentActionRepo
-  ;[, parentActionOrg] = action.match(/__(.*)_/)
-  parentActionOrg = parentActionOrg.replace('_', '-')
-  ;[parentActionRepo] = action.match(/([^_]+$)/)
 
-  if (repoOrg === oldOrg || parentActionOrg === oldOrg) {
-    return warning(repoOrg === oldOrg ? repoName : parentActionRepo)
+  if (!repoOrg.includes(oldOrg)) {
+    return core.info(
+      'Could not establish if the action was a NearForm supported action'
+    )
+  }
+
+  if (repoOrg === oldOrg) {
+    return warning(repoName)
   }
 }
 
