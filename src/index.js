@@ -32,14 +32,18 @@ function logRepoWarning() {
   const actionRepo = process.env.GITHUB_ACTION_REPOSITORY
   const action = process.env.GITHUB_ACTION
 
-  const [repoOrg, repoName] = actionRepo.split('/')
-  let parentActionOrg, parentActionRepo
-  ;[, parentActionOrg] = action.match(/__(.*)_/)
-  parentActionOrg = parentActionOrg.replace('_', '-')
-  ;[parentActionRepo] = action.match(/([^_]+$)/)
+  try {
+    const [repoOrg, repoName] = actionRepo.split('/')
+    let parentActionOrg, parentActionRepo
+    ;[, parentActionOrg] = action.match(/__(.*)_/)
+    parentActionOrg = parentActionOrg.replace('_', '-')
+    ;[parentActionRepo] = action.match(/([^_]+$)/)
 
-  if (repoOrg === oldOrg || parentActionOrg === oldOrg) {
-    return warning(repoOrg === oldOrg ? repoName : parentActionRepo)
+    if (repoOrg === oldOrg || parentActionOrg === oldOrg) {
+      return warning(repoOrg === oldOrg ? repoName : parentActionRepo)
+    }
+  } catch (e) {
+    core.warning(`There was an error: ${e}`)
   }
 }
 

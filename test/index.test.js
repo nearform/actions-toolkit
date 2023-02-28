@@ -150,3 +150,19 @@ test("should not print a warning if the composite action is under the 'nearform-
 
   sinon.assert.notCalled(warningStub)
 })
+
+test('should print a warning if any of the references required are undefined', async ({
+  teardown
+}) => {
+  teardown(() => {
+    process.env.GITHUB_ACTION_REF = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
+    process.env.GITHUB_ACTION = undefined
+  })
+
+  const { toolkit, warningStub } = setup()
+
+  toolkit.logRepoWarning()
+
+  sinon.assert.calledOnceWithMatch(warningStub, /There was an error/)
+})
