@@ -123,12 +123,13 @@ test("should print a warning if the composite action is not under the 'nearform-
 
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
-  process.env.GITHUB_ACTION = '__nearform_composite-action'
+  process.env.GITHUB_ACTION_PATH =
+    '/home/runner/work/_actions/nearform/name-of-action-repo'
   toolkit.logRepoWarning()
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
-    /The 'composite-action' action, no longer exists under the 'nearform' organisation./
+    /The 'name-of-action-repo' action, no longer exists under the 'nearform' organisation./
   )
 })
 
@@ -145,7 +146,8 @@ test("should not print a warning if the composite action is under the 'nearform-
 
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
-  process.env.GITHUB_ACTION = '__nearform_actions_composite-action'
+  process.env.GITHUB_ACTION_PATH =
+    '/home/runner/work/_actions/nearform-actions/name-of-action-repo'
   toolkit.logRepoWarning()
 
   sinon.assert.notCalled(warningStub)
