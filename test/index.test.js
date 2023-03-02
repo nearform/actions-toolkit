@@ -116,7 +116,7 @@ test("should print a warning if the composite action is not under the 'nearform-
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
-    process.env.GITHUB_ACTION = undefined
+    process.env.GITHUB_ACTION_PATH = undefined
   })
 
   const { toolkit, warningStub } = setup()
@@ -124,7 +124,7 @@ test("should print a warning if the composite action is not under the 'nearform-
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
   process.env.GITHUB_ACTION_PATH =
-    '/home/runner/work/_actions/nearform/name-of-action-repo'
+    '/home/runner/work/_actions/nearform/name-of-action-repo/v1'
   toolkit.logRepoWarning()
 
   sinon.assert.calledOnceWithMatch(
@@ -139,7 +139,7 @@ test("should not print a warning if the composite action is under the 'nearform-
   teardown(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
-    process.env.GITHUB_ACTION = undefined
+    process.env.GITHUB_ACTION_PATH = undefined
   })
 
   const { toolkit, warningStub } = setup()
@@ -147,7 +147,7 @@ test("should not print a warning if the composite action is under the 'nearform-
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
   process.env.GITHUB_ACTION_PATH =
-    '/home/runner/work/_actions/nearform-actions/name-of-action-repo'
+    '/home/runner/work/_actions/nearform-actions/name-of-action-repo/v1'
   toolkit.logRepoWarning()
 
   sinon.assert.notCalled(warningStub)
