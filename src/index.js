@@ -34,7 +34,7 @@ function logRepoWarning() {
 
   // Handle composite actions
   if (actionPath && actionPath.includes('/nearform/')) {
-    const actionRepoName = actionPath.split('/nearform/')[1]
+    const actionRepoName = actionPath.split('/nearform/')[1].split('/')[0]
     return warning(actionRepoName)
   }
 
