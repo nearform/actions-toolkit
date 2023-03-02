@@ -124,12 +124,35 @@ test("should print a warning if the composite action is not under the 'nearform-
   process.env.GITHUB_ACTION_REF = 'main'
   process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
   process.env.GITHUB_ACTION_PATH =
-    '/home/runner/work/_actions/nearform/name-of-action-repo/v1'
+    '/home/runner/work/_actions/nearform/name-of-action-repo'
   toolkit.logRepoWarning()
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
     /The 'name-of-action-repo' action, no longer exists under the 'nearform' organisation./
+  )
+})
+
+test('should include version number in warning if in path', async ({
+  teardown
+}) => {
+  teardown(() => {
+    process.env.GITHUB_ACTION_REF = undefined
+    process.env.GITHUB_ACTION_REPOSITORY = undefined
+    process.env.GITHUB_ACTION_PATH = undefined
+  })
+
+  const { toolkit, warningStub } = setup()
+
+  process.env.GITHUB_ACTION_REF = 'main'
+  process.env.GITHUB_ACTION_REPOSITORY = 'actions/github'
+  process.env.GITHUB_ACTION_PATH =
+    '/home/runner/work/_actions/nearform/name-of-action-repo/v1'
+  toolkit.logRepoWarning()
+
+  sinon.assert.calledOnceWithMatch(
+    warningStub,
+    /The 'name-of-action-repo@v1' action, no longer exists under the 'nearform' organisation./
   )
 })
 
