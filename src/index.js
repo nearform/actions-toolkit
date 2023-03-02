@@ -38,11 +38,7 @@ function logRepoWarning() {
       .split('/nearform/')[1]
       .split('/')
 
-    return warning(
-      actionRepoVersion
-        ? `${actionRepoName}@${actionRepoVersion}`
-        : actionRepoName
-    )
+    return warning(actionRepoName, actionRepoVersion)
   }
 
   const [repoOrg, repoName] = actionRepo.split('/')
@@ -55,14 +51,15 @@ function logRepoWarning() {
 /**
  * Simple function to avoid the repetition of the message
  */
-function warning(repoName) {
+function warning(repoName, repoVersion) {
+  const nameWithVersion = repoVersion ? `${repoName}@${repoVersion}` : repoName
   return core.warning(
     `The '${repoName}' action, no longer exists under the '${oldOrg}' organisation.\n` +
       `Please update it to '${newOrg}', you can do this\n` +
       `by updating your Github Workflow file from:\n\n` +
-      `    uses: '${oldOrg}/${repoName}'\n\n` +
+      `    uses: '${oldOrg}/${nameWithVersion}'\n\n` +
       `to:\n\n` +
-      `    uses: '${newOrg}/${repoName}'\n\n`
+      `    uses: '${newOrg}/${nameWithVersion}'\n\n`
   )
 }
 

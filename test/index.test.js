@@ -129,7 +129,7 @@ test("should print a warning if the composite action is not under the 'nearform-
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
-    /The 'name-of-action-repo' action, no longer exists under the 'nearform' organisation./
+    /The 'name-of-action-repo' action, no longer exists under the 'nearform' organisation.(\n.*)+uses: 'nearform-actions\/name-of-action-repo'/
   )
 })
 
@@ -152,7 +152,7 @@ test('should include version number in warning if in path', async ({
 
   sinon.assert.calledOnceWithMatch(
     warningStub,
-    /The 'name-of-action-repo@v1' action, no longer exists under the 'nearform' organisation./
+    /The 'name-of-action-repo' action, no longer exists under the 'nearform' organisation.(\n.*)+uses: 'nearform-actions\/name-of-action-repo@v1'/
   )
 })
 
