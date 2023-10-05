@@ -5,4 +5,4 @@ node_modules
 .idea
 # Visual Studio Code
 .vscode
-.nyc_output
+.tap
