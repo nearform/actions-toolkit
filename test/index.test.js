@@ -1,6 +1,6 @@
 'use strict'
 
-const { test } = require('tap')
+const { test } = require('node:test')
 const proxyquire = require('proxyquire')
 const sinon = require('sinon')
 
@@ -16,8 +16,8 @@ const setup = () => {
   return { toolkit, warningStub }
 }
 
-test('should return warning if actionRef is master', async ({ teardown }) => {
-  teardown(() => {
+test('should return warning if actionRef is master', async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
   })
@@ -34,8 +34,8 @@ test('should return warning if actionRef is master', async ({ teardown }) => {
   )
 })
 
-test('should return warning if actionRef is main', async ({ teardown }) => {
-  teardown(() => {
+test('should return warning if actionRef is main', async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
   })
@@ -52,10 +52,8 @@ test('should return warning if actionRef is main', async ({ teardown }) => {
   )
 })
 
-test('should not print warning if actionRef is not main or master', async ({
-  teardown
-}) => {
-  teardown(() => {
+test('should not print warning if actionRef is not main or master', async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
   })
@@ -69,10 +67,8 @@ test('should not print warning if actionRef is not main or master', async ({
   sinon.assert.notCalled(warningStub)
 })
 
-test("should print a warning if the reusable workflow is not under the 'nearform-actions' organisation", async ({
-  teardown
-}) => {
-  teardown(() => {
+test("should print a warning if the reusable workflow is not under the 'nearform-actions' organisation", async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
     process.env.GITHUB_ACTION = undefined
@@ -91,10 +87,8 @@ test("should print a warning if the reusable workflow is not under the 'nearform
   )
 })
 
-test("should not print a warning if the reusable workflow is under the 'nearform-actions' organisation", async ({
-  teardown
-}) => {
-  teardown(() => {
+test("should not print a warning if the reusable workflow is under the 'nearform-actions' organisation", async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
     process.env.GITHUB_ACTION = undefined
@@ -110,10 +104,8 @@ test("should not print a warning if the reusable workflow is under the 'nearform
   sinon.assert.notCalled(warningStub)
 })
 
-test("should print a warning if the composite action is not under the 'nearform-actions' organisation", async ({
-  teardown
-}) => {
-  teardown(() => {
+test("should print a warning if the composite action is not under the 'nearform-actions' organisation", async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
     process.env.GITHUB_ACTION_PATH = undefined
@@ -133,10 +125,8 @@ test("should print a warning if the composite action is not under the 'nearform-
   )
 })
 
-test('should include version number in warning if in path', async ({
-  teardown
-}) => {
-  teardown(() => {
+test('should include version number in warning if in path', async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
     process.env.GITHUB_ACTION_PATH = undefined
@@ -156,10 +146,8 @@ test('should include version number in warning if in path', async ({
   )
 })
 
-test("should not print a warning if the composite action is under the 'nearform-actions' organisation", async ({
-  teardown
-}) => {
-  teardown(() => {
+test("should not print a warning if the composite action is under the 'nearform-actions' organisation", async t => {
+  t.after(() => {
     process.env.GITHUB_ACTION_REF = undefined
     process.env.GITHUB_ACTION_REPOSITORY = undefined
     process.env.GITHUB_ACTION_PATH = undefined
